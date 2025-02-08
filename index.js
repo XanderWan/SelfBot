@@ -36,4 +36,55 @@ client.on('messageCreate', async (message) => {
   }
 });
 
+async function fetchAllMessages(channel) {
+  const messages = [];
+  let lastMessageId = null;
+
+  while (true) {
+    const batch = await channel.messages.fetch({
+      limit: 100,
+      before: lastMessageId
+    });
+
+    if (batch.size === 0) break;
+
+    const processedBatch = batch.map(msg => ({
+      // Core message data (Critical)
+      id: msg.id,
+      content: msg.content,
+      timestamp: msg.createdAt.toISOString(),
+      channelId: msg.channelId,
+      
+      // User context (High priority)
+      author: {
+        id: msg.author.id,
+        username: msg.author.username
+      },
+      mentions: {
+        users: Array.from(msg.mentions.users.values()).map(u => u.id),
+        roles: Array.from(msg.mentions.roles.values()).map(r => r.id)
+      },
+      
+      // Basic metadata (Medium priority)
+      isPinned: msg.pinned,
+      hasAttachments: msg.attachments.size > 0
+    }));
+
+    messages.push(...processedBatch);
+    lastMessageId = batch.last().id;
+  }
+
+  return messages;
+}
+
+async function saveMessages(messages) {
+  const outputPath = 'community_data.json';
+  await fs.writeFile(outputPath, JSON.stringify({
+    collectedAt: new Date().toISOString(),
+    messageCount: messages.length,
+    messages: messages
+  }, null, 2));
+  console.log(`Saved ${messages.length} messages to ${outputPath}`);
+}
+
 client.login(process.env.DISCORD_TOKEN);

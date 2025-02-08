@@ -17,8 +17,87 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="../index.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
+  <style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f8fafc;
+    }
+    
+    .chart-container {
+        width: 600px;
+        margin: 20px auto;
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
+    
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        padding: 24px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    h2 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 16px;
+    }
+    
+    .tooltip {
+        position: absolute;
+        padding: 12px;
+        background: rgba(15, 23, 42, 0.9);
+        color: white;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        pointer-events: none;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
+
+    .axis text {
+        font-size: 12px;
+        font-weight: 500;
+        color: #64748b;
+    }
+
+    .axis path, .axis line {
+        stroke: #e2e8f0;
+    }
+
+    .bar {
+        fill: url(#barGradient);
+    }
+    
+    .bar:hover {
+        opacity: 0.9;
+    }
+
+    .line {
+        fill: none;
+        stroke: url(#lineGradient);
+        stroke-width: 2;
+    }
+
+    .dot {
+        fill: #0ea5e9;
+    }
+
+    .pie-slice {
+        stroke: white;
+        stroke-width: 2;
+    }
+  </style>
 </head>
+
 <body>
   
 <div class="container">
@@ -45,7 +124,7 @@
       </script>
   </div>
 </div>
-<div class="container"  style="padding-bottom: 2em; margin-top: 3em; border-radius: 2em; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); padding-left: 3em; padding-right: 3em; padding-top: 1em; padding-bottom: 1em;">
+<!-- <div class="container"  style="padding-bottom: 2em; margin-top: 3em; border-radius: 2em; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); padding-left: 3em; padding-right: 3em; padding-top: 1em; padding-bottom: 1em;">
   <h2 style="margin-bottom: 0.5em;"><b>Tracked Servers 🤖</b></h2>
   <div class="scrollable-content scrollable-section">
       <div class="grid-card">
@@ -94,8 +173,8 @@
           <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
       </div>
   </div>
-</div>
-
+</div> -->
+<div class="container">
 <style>
 .scrollable-section {
   max-height: 500px; 
@@ -124,6 +203,52 @@
 }
 
 </style>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <div id="userActivityChart" style="border-radius: 2em; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);" class="chart-container"><h2>User Activity</h2></div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <div id="mentionsChart" style="border-radius: 2em; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);" class="chart-container"> <h2>Mentions Analysis</h2></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <div id="timeActivityChart"  style="border-radius: 2em; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);" class="chart-container"><h2>Time-based Activity</h2></div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <div id="contentAnalysisChart" style="border-radius: 2em; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);" class="chart-container"> <h2>Content Analysis</h2></div>
+    </div>
+  </div>
+</div>
+</div>
+<script type="module">
+  import { renderUserActivity, renderMentions, renderTimeActivity, renderContentAnalysis } from '../analytics.js';
+  const tooltip = d3.select("body")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
+  window.addEventListener('load', () => {
+    renderUserActivity(tooltip);
+    renderMentions(tooltip);
+    renderTimeActivity(tooltip);
+    renderContentAnalysis(tooltip);
+  });
+
+  // Custom styling for the graphs
+  const styleGraphs = () => {
+    const charts = document.querySelectorAll('.chart-container');
+    charts.forEach(chart => {
+      chart.style.padding = '20px';
+      chart.style.margin = '10px';
+      chart.style.textAlign = 'center';
+      chart.style.width = '100%';
+      chart.style.height = 'auto';
+    });
+  };
+
+  window.addEventListener('load', styleGraphs);
+</script>
 </body>
 </html>
