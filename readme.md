@@ -23,8 +23,8 @@ Need to set up own .env file with your selfbot Discord token and an Open API Key
 
 
 ## Contributors
-Xander Wanagel
-Aaditya Bellamkonda
-Lamb Chen
+Xander Wanagel     
+Aaditya Bellamkonda      
+Lamb Chen     
 
 ## Acknowledgments
