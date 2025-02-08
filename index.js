@@ -13,19 +13,15 @@ client.on('messageCreate', async (message) => {
 
   if (message.content === 'hello all!') {
     try {
-      let allMessages = [];
-      let lastMessageId = null;
-
-      while (true) {
-        const messages = await message.channel.messages.fetch({ limit: 100, before: lastMessageId });
-        if (messages.size === 0) break;
-        
-        allMessages.push(...messages.map(msg => ({ username: msg.author.username, content: msg.content })));
-        lastMessageId = messages.last().id;
-      }
+      // Fetch only the last 20 messages
+      const messages = await message.channel.messages.fetch({ limit: 20 });
+      const allMessages = [...messages.map(msg => ({ 
+        username: msg.author.username, 
+        content: msg.content 
+      }))];
       
       fs.writeFileSync('messages.json', JSON.stringify(allMessages, null, 2));
-      console.log('All messages saved to messages.json');
+      console.log('Last 20 messages saved to messages.json');
       
       // Import and call the analyzeChatHistory function
       const { analyzeChatHistory } = require('./openapiCaller');
@@ -34,7 +30,7 @@ client.on('messageCreate', async (message) => {
       // message.channel.send('All messages saved and analyzed.');
     } catch (error) {
       console.error('Error fetching messages:', error);
-      console.log('AFailed to fetch or analyze messages');
+      console.log('Failed to fetch or analyze messages');
       // message.channel.send('Failed to fetch or analyze messages.');
     }
   }

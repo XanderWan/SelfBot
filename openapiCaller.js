@@ -17,7 +17,10 @@ async function analyzeChatHistory() {
             },
             body: JSON.stringify({
                 model: "gpt-4",
-                messages: [{ role: "system", content: "Analyze the following chat history and identify 5 common themes." },
+                messages: [{ 
+                    role: "system", 
+                    content: "You are a precise analyzer that must identify EXACTLY 3 common themes from the provided chat history. You must format your response as a numbered list with exactly 3 items. Any other format or number of themes is incorrect and unacceptable. At the end of each line, add \"\\n\"" 
+                },
                            { role: "user", content: chatContent }],
                 max_tokens: 200
             })
@@ -38,7 +41,7 @@ async function analyzeChatHistory() {
 }
 
 
-analyzeChatHistory();
+//analyzeChatHistory();
 
 // Export the function
 module.exports = { analyzeChatHistory };
