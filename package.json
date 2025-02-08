@@ -11,7 +11,10 @@
   "dependencies": {
     "discord.js-selfbot-v13": "^3.5.1",
     "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "node-fetch": "^3.3.2",
-    "openai": "^4.83.0"
+    "openai": "^4.83.0",
+    "openapi": "^1.0.1",
+    "promises": "^0.2.5"
   }
 }
