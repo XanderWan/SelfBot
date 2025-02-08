@@ -9,8 +9,8 @@ export async function renderUserActivity(tooltip) {
 
     const svg = d3.select("#userActivityChart")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+        .attr("preserveAspectRatio", "xMidYMid meet")
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -84,7 +84,7 @@ export async function renderUserActivity(tooltip) {
                 .duration(500)
                 .style("opacity", 0);
         });
-    }
+}
 
 // Pie Chart for Mentions with gradients
 export async function renderMentions(tooltip) {
@@ -96,8 +96,8 @@ export async function renderMentions(tooltip) {
 
     const svg = d3.select("#mentionsChart")
         .append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet")
         .append("g")
         .attr("transform", `translate(${width/2},${height/2})`);
 
@@ -166,8 +166,8 @@ export async function renderTimeActivity(tooltip) {
 
     const svg = d3.select("#timeActivityChart")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+        .attr("preserveAspectRatio", "xMidYMid meet")
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -260,8 +260,8 @@ export async function renderContentAnalysis(tooltip) {
 
     const svg = d3.select("#contentAnalysisChart")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+        .attr("preserveAspectRatio", "xMidYMid meet")
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -293,7 +293,7 @@ export async function renderContentAnalysis(tooltip) {
         .domain(data.map(d => d.word))
         .padding(0.2);
 
-    //// Add X axis
+    // Add X axis
     svg.append("g")
         .attr("class", "axis")
         .attr("transform", `translate(0,${height})`)
@@ -332,5 +332,3 @@ export async function renderContentAnalysis(tooltip) {
                 .style("opacity", 0);
         });
 }
-
-
