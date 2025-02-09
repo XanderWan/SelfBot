@@ -1,17 +1,13 @@
 // Shared styles & settings
 const chartStyles = {
-    containerBackground: "linear-gradient(135deg, #ffffff, #f8fafc)",
     // Updated to use Roboto as primary font for a cleaner look
     fontFamily: "'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif",
     titleSize: "18px",
     axisColor: "#94a3b8",
     gridColor: "#e2e8f0",
     tooltipStyles: `
-      background-color: rgba(255, 255, 255, 0.98);
-      border: 1px solid #e2e8f0;
       border-radius: 6px;
       padding: 8px 12px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       font-family: 'Roboto', system-ui, sans-serif;
       font-size: 14px;
       line-height: 1.4;
@@ -24,10 +20,8 @@ const chartStyles = {
     d3.select(selector).selectAll("*").remove();
     return d3.select(selector)
       .append("div")
-      .style("background", chartStyles.containerBackground)
       .style("border-radius", "12px")
       .style("padding", "16px")
-      .style("box-shadow", "0 2px 6px rgba(0, 0, 0, 0.1)");
   }
   
   // ---------------------------------------------------------------------------
@@ -59,15 +53,15 @@ const chartStyles = {
         .attr("y2", "100%");
       gradient.append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "#4f46e5")
+        .attr("stop-color", "#08a3bd")
         .attr("stop-opacity", 0.95);
       gradient.append("stop")
         .attr("offset", "50%")
-        .attr("stop-color", "#6366f1")
+        .attr("stop-color", "#08a3bd")
         .attr("stop-opacity", 0.9);
       gradient.append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", "#818cf8")
+        .attr("stop-color", "#06b6d4")
         .attr("stop-opacity", 0.85);
   
       // Scales with vertical padding: the y range now maps to [height, 10] so that 10px of space appears at the top.
@@ -288,17 +282,20 @@ const chartStyles = {
       svg.append("text")
         .attr("text-anchor", "middle")
         .attr("y", -height / 2 + 20)
-        .style("font-size", "16px")
         .style("font-family", chartStyles.fontFamily)
+        .style("font-size", chartStyles.titleSize)
+        .style("font-weight", "600")
         .style("fill", "#1e293b")
+        .style("marigin-bottom", "2em")
         .text(`Mentions Analysis (Total: ${apiResponse.totalMentions})`);
   
+    
     } catch (error) {
       console.error("Error rendering mentions chart:", error);
       d3.select("#mentionsChart")
         .append("div")
         .attr("class", "error-message")
-        .style("color", "#ef4444")
+        .style("color", "#08a3bd")
         .style("text-align", "center")
         .style("padding", "1rem")
         .text("Error loading mentions data. Please try again later.");
@@ -332,11 +329,11 @@ export async function renderTimeActivity(tooltip) {
             .attr("y2", "0%");
         gradient.append("stop")
             .attr("offset", "0%")
-            .attr("stop-color", "#0ea5e9")
+            .attr("stop-color", "#08a3bd")
             .attr("stop-opacity", 1);
         gradient.append("stop")
             .attr("offset", "100%")
-            .attr("stop-color", "#7dd3fc")
+            .attr("stop-color", "#06b6d4")
             .attr("stop-opacity", 0.8);
 
         // Parse date and set up scales (with top padding: y range from height to 10)
@@ -402,7 +399,7 @@ export async function renderTimeActivity(tooltip) {
             .attr("cx", d => x(d.date))
             .attr("cy", d => y(d.count))
             .attr("r", 4)
-            .attr("fill", "#0ea5e9")
+            .attr("fill", "#08a3bd")
             .style("cursor", "pointer")
             .on("mouseover", function(event, d) {
                 tooltip.transition().duration(200)
@@ -473,11 +470,11 @@ export async function renderContentAnalysis(tooltip) {
             .attr("y2", "0%");
         gradient.append("stop")
             .attr("offset", "0%")
-            .attr("stop-color", "#8b5cf6")
+            .attr("stop-color", "#08a3bd")
             .attr("stop-opacity", 1);
         gradient.append("stop")
             .attr("offset", "100%")
-            .attr("stop-color", "#a78bfa")
+            .attr("stop-color", "#06b6d4")
             .attr("stop-opacity", 0.8);
 
         // Adjust x scale to include a 5% padding
