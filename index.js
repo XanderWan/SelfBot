@@ -45,7 +45,6 @@ async function fetchAllMessages(channel) {
       limit: 100,
       before: lastMessageId
     });
-
     if (batch.size === 0) break;
 
     const processedBatch = batch.map(msg => ({

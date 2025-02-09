@@ -56,18 +56,71 @@ app.get('/api/stats/user-activity', async (req, res) => {
 // Get mentions analysis
 app.get('/api/stats/mentions', async (req, res) => {
     try {
+        // Read and parse the data file
         const data = await fs.readFile('community_data.json', 'utf8');
         const { messages } = JSON.parse(data);
         
-        const mentionsData = _.chain(messages)
-            .flatMap(msg => [...msg.mentions.users, ...msg.mentions.roles])
-            .countBy()
-            .map((count, id) => ({ id, count }))
-            .value();
+        // Process user mentions and role mentions separately
+        const mentionsAnalysis = messages.reduce((acc, msg) => {
+            // Process user mentions
+            msg.mentions.users.forEach(userId => {
+                const existingUser = acc.find(m => m.id === userId);
+                if (existingUser) {
+                    existingUser.count++;
+                    existingUser.messages.push(msg.id);
+                } else {
+                    acc.push({
+                        id: userId,
+                        type: 'user',
+                        count: 1,
+                        messages: [msg.id]
+                    });
+                }
+            });
+
+            // Process role mentions
+            msg.mentions.roles.forEach(roleId => {
+                const existingRole = acc.find(m => m.id === roleId);
+                if (existingRole) {
+                    existingRole.count++;
+                    existingRole.messages.push(msg.id);
+                } else {
+                    acc.push({
+                        id: roleId,
+                        type: 'role',
+                        count: 1,
+                        messages: [msg.id]
+                    });
+                }
+            });
+
+            return acc;
+        }, []);
+
+        // Sort by count in descending order
+        const sortedMentions = mentionsAnalysis
+            .sort((a, b) => b.count - a.count)
+            .map(mention => ({
+                ...mention,
+                percentage: ((mention.count / messages.length) * 100).toFixed(2)
+            }));
+
+        // Add metadata to the response
+        const response = {
+            totalMessages: messages.length,
+            totalMentions: sortedMentions.reduce((sum, m) => sum + m.count, 0),
+            uniqueMentionTargets: sortedMentions.length,
+            mentionsData: sortedMentions
+        };
+
+        res.json(response);
         
-        res.json(mentionsData);
     } catch (error) {
-        res.status(500).json({ error: 'Error processing mentions data' });
+        console.error('Error processing mentions data:', error);
+        res.status(500).json({ 
+            error: 'Error processing mentions data',
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
     }
 });
 
