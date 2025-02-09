@@ -25,12 +25,12 @@ export async function renderUserActivity(tooltip) {
 
     gradient.append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "#3b82f6")
+        .attr("stop-color", "#08b7bd")
         .attr("stop-opacity", 1);
 
     gradient.append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", "#60a5fa")
+        .attr("stop-color", "#06b6d4")
         .attr("stop-opacity", 0.8);
 
     const x = d3.scaleBand()
@@ -182,12 +182,12 @@ export async function renderTimeActivity(tooltip) {
 
     gradient.append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "#0ea5e9")
+        .attr("stop-color", "#08b7bd")
         .attr("stop-opacity", 1);
 
     gradient.append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", "#7dd3fc")
+        .attr("stop-color", "#06b6d4")
         .attr("stop-opacity", 0.8);
 
     const parseDate = d3.timeParse("%Y-%m-%d");
@@ -234,6 +234,7 @@ export async function renderTimeActivity(tooltip) {
         .attr("cx", d => x(d.date))
         .attr("cy", d => y(d.count))
         .attr("r", 4)
+        .attr("fill", "#06b6d4")
         .on("mouseover", function(event, d) {
             tooltip.transition()
                 .duration(200)
@@ -276,12 +277,12 @@ export async function renderContentAnalysis(tooltip) {
 
     gradient.append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "#8b5cf6")
+        .attr("stop-color", "#08b7bd")
         .attr("stop-opacity", 1);
 
     gradient.append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", "#a78bfa")
+        .attr("stop-color", "#06b6d4")
         .attr("stop-opacity", 0.8);
 
     const x = d3.scaleLinear()
